@@ -1,47 +1,8 @@
 // script.js
-// --- DATA ---
-// Shared website content data (Team, Gallery, etc.)
-
-const teamMembers = [
-    // Updated image paths to reliable placeholders to prevent the "question mark" icon
-    { name: "Jogeshwar Chhatria", role: "PhD Student", joiningDate: "July 2022",
-      linkedin: "https://www.linkedin.com/in/jogeswar-chhatria-6538362b4/", email: "cy22d017@smail.iiitm.ac.in", imageUrl: "IMAGE/PROFILE/jogesh.jpg" }, 
-    { name: "Madhurja Buragohain", role: "PhD Student", joiningDate: "July 2022", linkedin: "https://www.linkedin.com/in/mburagohain/",
-      imageUrl: "IMAGE/PROFILE/madhurja.jpg", email: "cy22d015@smail.iiitm.ac.in" }, 
-    { name: "Sudhin R", role: "PhD Student", joiningDate: "July 2023",
-      linkedin: "https://www.linkedin.com/in/sudhin-r/", email: "cy23d024@smail.iitm.ac.in", imageUrl: "IMAGE/PROFILE/sudhin.jpg"}, 
-    { name: "Athira J", role: "PhD Student", joiningDate: "July 2024",
-      linkedin: "https://www.linkedin.com/in/athira-jayasankar-867b46214/", email: "cy24d300@smail.iitm.ac.in", imageUrl: "IMAGE/PROFILE/athira.jpg"}, 
-    { name: "Anjana Vijayan", role: "PhD Student", joiningDate: "July 2025",
-      linkedin: "#", email: "cy25d037@smail.iiitm.ac.in", imageUrl: "IMAGE/PROFILE/anjana.jpg"}, 
-    { name: "Stuti Gupta", role: "Project Student", joiningDate: "July 2025",
-      linkedin: "https://www.linkedin.com/in/stuti-gupta-24285b215/", email: "guptastuti012@gmail.com", imageUrl: "IMAGE/PROFILE/stuti.jpg"}, 
-    { name: "Ankan Kamila", role: "Masters Student", joiningDate: "July 2025",
-      linkedin: "#", email: "cy24c013@smail.iiitm.ac.in", imageUrl: "IMAGE/PROFILE/ankan.jpg"}, 
-    { name: "Himadri Mittal", role: "Masters Student", joiningDate: "July 2025",
-      linkedin: "#", email: "cy24c033@smail.iiitm.ac.in", imageUrl: "IMAGE/PROFILE/himadri.jpg"}
-];
-
-const postdocAlumni = [
-    { name: "Dr. Pragin", role: "Works at TCS", where: "Post Doc, 2024 (CCIC LAB)" }, 
-    { name: "Dr. Maiyelvaganan ", role: "Postdoctoral Researcher", where: "PostDoc, 2025 (CCIC LAB)" } 
-];
-
-const mscAlumni = [
-    { name: "Stuti Gupta", role: "Continewing PhD at CCIC", where: "MSc, 2023" },
-    { name: "Amiya Paul", role: "PhD at  University of North Carolina at Chapel Hill", where: "MSc, 2024" },
-];
-
-const internAlumni = [
-    { name: "Soumya U K", role: "PhD at  TCG Crest, Kolkata", where: "MSc, 2023" },
-    { name: "Nikitha S", role: "PhD at Ghent University, Belgium", where: "MSc, 2022" },
-    { name: "Muskan", role: "Works at Pharma", where: "MSc, 2023" },
-    { name: "Sankari NS", role: "PhD at  IIT Madras", where: "MSc, 2022" }
-];
 
 // NOTE: News Items have been moved to news.html.
 // NOTE: Gallery Images have been moved to gallery.html.
-
+// NOTE: Team Members and Alumni have been moved to team.html.
 
 // --- DYNAMIC CONTENT RENDERING FUNCTIONS ---
 
@@ -51,8 +12,8 @@ function renderPublications(limit) {
 
     list.innerHTML = ''; 
 
-    // NOTE: Publications data is missing from the provided script. 
-    // This function will not render anything unless a 'publications' array is defined.
+    // NOTE: This function requires a 'publications' array to be defined globally 
+    // (e.g. in publications.html)
     if (typeof publications === 'undefined' || !Array.isArray(publications)) {
         console.warn('Publications data is missing. Skipping renderPublications.');
         return;
@@ -99,57 +60,13 @@ function renderPublications(limit) {
             `;
             pubsColumn.appendChild(item);
         });
-        
+       
         yearSection.innerHTML = yearColumn;
         yearSection.appendChild(pubsColumn);
         list.appendChild(yearSection);
     });
 }
-    
-function renderTeam(members, containerId) {
-    const list = document.getElementById(containerId);
-    if (!list) return;
-
-    list.innerHTML = '';
-    members.forEach(member => {
-        const card = document.createElement('div');
-        card.className = 'text-center';
-        const initials = member.name.split(' ').map(n => n[0]).join('');
-        const imageUrl = member.imageUrl || `https://placehold.co/200x200/EBF4FF/3B82F6?text=${initials}`;
-        
-        let description = `<p class="text-blue-600">${member.role}</p>`;
-        if (member.joiningDate) {
-            description += `<p class="text-gray-500 text-sm mt-1">Joined: ${member.joiningDate}</p>`;
-        }
-        if (member.where) {
-            description += `<p class="text-gray-500 text-sm mt-1">${member.where}</p>`;
-        }
-
-        let socialLinks = '';
-        if (member.linkedin && member.email) {
-            socialLinks = `
-                <div class="flex justify-center space-x-3 mt-2">
-                    <a href="${member.linkedin}" class="text-gray-400 hover:text-blue-600">
-                        <i data-feather="linkedin" class="w-5 h-5"></i>
-                    </a>
-                    <a href="mailto:${member.email}" class="text-gray-400 hover:text-blue-600">
-                        <i data-feather="mail" class="w-5 h-5"></i>
-                    </a>
-                </div>`;
-        }
-
-        card.innerHTML = `
-            <img src="${imageUrl}" onerror="this.onerror=null;this.src='https://placehold.co/200x200/EBF4FF/3B82F6?text=${initials}';" alt="${member.name}" class="w-40 h-40 mx-auto rounded-full object-cover mb-4 shadow-lg border-4 border-white">
-            <h4 class="font-bold text-lg">${member.name}</h4>
-            ${description}
-            ${socialLinks}
-        `;
-        list.appendChild(card);
-    });
-    // Re-initialize Feather icons after adding new elements
-    if (window.feather) feather.replace(); 
-}
-
+   
 function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     if (!grid) return;
@@ -170,7 +87,7 @@ function renderGallery() {
         const item = document.createElement('div');
         item.className = 'aspect-w-1 aspect-h-1 cursor-pointer overflow-hidden rounded-lg group';
         item.innerHTML = `<img src="${img.src}" onerror="this.onerror=null;this.src='https://placehold.co/400x300/F59E0B/FFFFFF?text=Photo+Missing';" alt="${img.caption}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300">`;
-        
+       
         item.addEventListener('click', () => {
             modalImg.src = img.src;
             // Add a fallback for the modal image too
@@ -207,15 +124,8 @@ function fixNavigationLinks() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // --- Data Rendering ---
-    // Only run if the containers exist (e.g. on team.html)
+    // Only run if the containers exist (e.g. on publications.html or gallery.html)
     renderPublications(4); 
-    renderTeam(teamMembers, 'team-members-list'); 
-    renderTeam(postdocAlumni, 'team-alumni-postdoc-list'); 
-    renderTeam(mscAlumni, 'team-alumni-msc-list'); 
-    renderTeam(internAlumni, 'team-alumni-intern-list');
-    
-    // NOTE: News rendering is now handled directly in news.html
-    
     renderGallery();
 
     // --- Global Setup ---
@@ -234,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Event Listeners ---
 
-    // "Show All" button functionality
+    // "Show All" button functionality for Publications
     const toggleBtn = document.getElementById('toggle-publications-btn');
     if (toggleBtn) {
         let allShown = false;
@@ -279,33 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 header.classList.add('py-4');
                 header.classList.remove('py-2');
             }
-        });
-    }
-
-    // Active nav link highlighting on scroll (Only relevant for team.html for internal anchors)
-    const currentPage = document.querySelector('nav')?.dataset.currentPage;
-    if (currentPage === 'team') {
-        const sections = document.querySelectorAll('.section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (window.scrollY >= sectionTop - 90) { 
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                if (link.getAttribute('href').includes('team.html#')) {
-                    link.classList.remove('active');
-                    const linkHash = link.getAttribute('href').split('#')[1];
-                    if (current === linkHash) {
-                        link.classList.add('active');
-                    }
-                }
-            });
         });
     }
 });
